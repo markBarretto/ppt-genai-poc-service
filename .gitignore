@@ -3,7 +3,7 @@
 /node_modules
 /build
 /workspace/output
-/workspace/template
+/workspace/templates
 
 # Logs
 logs
