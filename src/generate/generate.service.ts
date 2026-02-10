@@ -33,6 +33,7 @@ export class GenerateService {
         updatedAt: new Date(),
       })
 
+      // TODO fix return to be added to chat log
       return _id;
     } catch(e) {
       console.log(e); // TODO centralized logging
@@ -52,6 +53,6 @@ export class GenerateService {
   }
 
   remove(id: number) {
-    return this.pptGenModel.deleteOne({id});
+    return this.pptGenModel.deleteOne({_id: id});
   }
 }
