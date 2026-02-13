@@ -29,7 +29,7 @@ export class PromptService {
       let respId = '';//await this.upsertPromptRecord(role, content, id);
       
       const toolCalled = (toolname) => new RegExp(toolname);
-      const toolCalls =  this.toolService.getToolNames().filter((toolName)=>{
+      let toolCalls =  this.toolService.getToolNames().filter((toolName)=>{
         return toolCalled(toolName).test(content);
       })
       toolCalls.forEach(async (call)=>{
@@ -76,13 +76,17 @@ export class PromptService {
       
       const { tool_calls } = resp?.message;
 
+      let toolCallsResp;
+
       if (tool_calls) {
-        await Promise.allSettled(tool_calls.map(call=> {
+        toolCallsResp = await Promise.allSettled(tool_calls.map(call=> {
           const { name, arguments: args } = call?.function;
           // await tool call
           return this.callTool(name, args, id);
         }));
       }
+
+      return Object.assign({}, toolCallsResp || resp, { promptId: id || respId });
 
     } catch (e) {
       throw `error calling model ${e}`;
@@ -98,6 +102,8 @@ export class PromptService {
 
       const toolResp = await this.toolService[name](args);
       await this.upsertPromptRecord('tool', `called function ${name}`, id);
+
+      return toolResp;
     } catch(e) {
       throw `error calling tool: ${e}`
     }
