@@ -31,4 +31,6 @@ export class GenerateController {
   remove(@Param('id') id: string) {
     return this.generateService.remove(+id);
   }
+
+  
 }

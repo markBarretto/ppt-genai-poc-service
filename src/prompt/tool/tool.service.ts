@@ -19,6 +19,9 @@ export class ToolService {
     }
 
     logMethodParams(propertyKey: string) {
+        if (!this.methodMeta[propertyKey]) {
+            return;
+        }
         const { description, parameter_descriptions } = this.methodMeta[propertyKey];
         return {
             type: 'function',
@@ -42,10 +45,13 @@ export class ToolService {
         }
     }
 
-    getTools() {
-        const ignoreMethods = ['constructor', 'logMethodParams', 'getTools'];
-        const methods: any[] = Reflect.ownKeys(Object.getPrototypeOf(this)).filter(m => !ignoreMethods.find(i=>i==m) && typeof this[m] === 'function');
-        return methods.map(m=>this.logMethodParams(m))
+    getToolNames() {
+        const ignoreMethods = ['constructor', 'logMethodParams', 'getToolNames', 'getTools'];
+        return Reflect.ownKeys(Object.getPrototypeOf(this)).filter(m => !ignoreMethods.find(i=>i==m) && typeof this[m] === 'function');
+    }
+
+    getTools(methods: (string | symbol)[]) {
+        return methods.map((m: string)=>this.logMethodParams(m));
     }
 
     async post_generate_pptx(args: any) {
@@ -53,4 +59,5 @@ export class ToolService {
         const presentationInput = JSON.parse(JSON.stringify(p));
         return axios.post(`${this.pptGenUrl}/generate`, { presentationInput });
     }
+
 }

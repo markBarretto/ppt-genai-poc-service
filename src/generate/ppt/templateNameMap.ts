@@ -22,6 +22,14 @@ export const template = {
             "bullet7":"Content Placeholder 9",
             "bullet8":"Content Placeholder 10",
             "bullet9":"Content Placeholder 11"
+        },
+        "imgDimensions": {
+            "Picture Placeholder 2": {
+                "width":13.37,
+                "height":8.7,
+                "h": -.02,
+                "v": 3.7
+            }
         }
     },
     "executive_summary_with_one_image": {
@@ -30,6 +38,14 @@ export const template = {
             "picture":"Picture Placeholder 14",
             "title":"Title 12",
             "text":"Text Placeholder 13"
+        },
+        "imgDimensions": {
+            "Picture Placeholder 14": {
+                "width":16.69,
+                "height":15.45,
+                "h": 0,
+                "v":1.53
+            }
         }
     },
     "key_message_01_with_one_image": {
@@ -37,6 +53,14 @@ export const template = {
         "sectionAlias": {
             "text":"Title 4",
             "picture":"Picture Placeholder 5"
+        },
+        "imgDimensions": {
+            "Picture Placeholder 5": {
+                "width":16.93,
+                "height":15.96,
+                "h":16.93,
+                "v":1.53
+            }
         }
     },
     "key_message_02_white_backgroud": {
@@ -57,6 +81,14 @@ export const template = {
             "text":"Text Placeholder 4",
             "picture":"Picture Placeholder 3",
             "title":"Title 2"
+        },
+        "imgDimensions": {
+            "Picture Placeholder 3": {
+                "width":16,
+                "height":15.39,
+                "h":16.93,
+                "v":1.53
+            }
         }
     },
     "contentSections_02_no_image": {
@@ -72,6 +104,14 @@ export const template = {
         "sectionAlias": {
             "picture":"Picture Placeholder 5",
             "text":"Text Placeholder 4"
+        },
+        "imgDimensions": {
+            "Picture Placeholder 5": {
+                "width":16.69,
+                "height":15.45,
+                "h":0,
+                "v":1.53
+            }
         }
     },
     "contentSections_04_with_one_image": {
@@ -81,6 +121,14 @@ export const template = {
             "subtitle":"Text Placeholder 6",
             "title":"Title 3",
             "picture":"Picture Placeholder 4"
+        },        
+        "imgDimensions": {
+            "Picture Placeholder 4": {
+                "width":16.92,
+                "height":16,
+                "h":16.95,
+                "v":1.53
+            }
         }
     },
     "salutation": {
@@ -102,6 +150,14 @@ export const template = {
             "subtitle3":"Text Placeholder 14",
             "text3":"Text Placeholder 13",
             "picture":"Picture Placeholder 6"
+        },
+        "imgDimensions": {
+            "Picture Placeholder 6": {
+                "width":21.51,
+                "height":1.54,
+                "h":0,
+                "v":1.53
+            }
         }
     },
     "onepager_2": {
@@ -118,6 +174,14 @@ export const template = {
             "highlight3":"Text Placeholder 14",
             "text3":"Text Placeholder 15",
             "picture":"Picture Placeholder 6"
+        },
+        "imgDimensions": {
+            "Picture Placeholder 6": {
+                "width":13.1,
+                "height":16.2,
+                "h":20.78,
+                "v":1.32
+            }
         }
     }
 }

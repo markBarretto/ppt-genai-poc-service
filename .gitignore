@@ -4,6 +4,7 @@
 /build
 /workspace/output
 /workspace/templates
+/workspace/images
 
 # Logs
 logs

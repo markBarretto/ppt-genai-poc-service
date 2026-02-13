@@ -9,7 +9,11 @@ export class PromptController {
 
   @Post()
   create(@Body() createPromptDto: CreatePromptDto) {
-    return this.promptService.create(createPromptDto);
+    try {
+      return this.promptService.create(createPromptDto);
+    } catch(e) {
+      throw(e)
+    }
   }
 
   @Get()

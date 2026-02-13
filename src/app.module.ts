@@ -23,7 +23,7 @@ import { GenerateModule } from './generate/generate.module';
       {
         path: '',
         module: GenerateModule,
-      }
+      },
     ]),
     PromptModule, 
     GenerateModule

@@ -29,7 +29,8 @@ export class GenerateService {
 
       await this.pptGenModel.updateOne({_id}, {
         filePath,
-        binary,
+        // binary,
+        status: "complete",
         updatedAt: new Date(),
       })
 
@@ -38,6 +39,10 @@ export class GenerateService {
     } catch(e) {
       console.log(e); // TODO centralized logging
     }
+  }
+
+  listImages() {
+
   }
 
   findAll() {
