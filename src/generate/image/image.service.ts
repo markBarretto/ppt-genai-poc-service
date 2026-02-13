@@ -49,7 +49,7 @@ export class ImageService {
                 },
                 {
                     role: "user",
-                    content: buff.toString('base64')
+                    images: [ buff.toString('base64') ]
                 }
             ]
         });
