@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 
 import { CreatePromptDto } from './dto/create-prompt.dto';
 import { UpdatePromptDto } from './dto/update-prompt.dto';
@@ -25,54 +25,46 @@ export class PromptService {
 
   async callModel(id: string, role: string, content: string, history?: PromptCall[], model?: string) {
     try {
-      let tempHist = [];
-      let respId = '';//await this.upsertPromptRecord(role, content, id);
-      
+      let prePrompts = [];
+            
       const toolCalled = (toolname) => new RegExp(toolname);
       let toolCalls =  this.toolService.getToolNames().filter((toolName)=>{
         return toolCalled(toolName).test(content);
       })
+
       toolCalls.forEach(async (call)=>{
          switch (call) {
           // prompt engineering add context
           case 'post_generate_pptx':
-            tempHist.push({role, content: template});
-            tempHist.push({role, content: images});
+            prePrompts.push({role, content: template});
+            prePrompts.push({role, content: images});
             break;
           default:
             break;
         }
       })
+
+      let pId = await this.upsertPromptRecord(role, content, id);
+      const prompt = await this.promptModel.findById(pId);
+      const { history, _id } = prompt;
+      const promptId = _id.toString()
+      prePrompts.map(p=>{
+        const { role, content } = p
+        return this.upsertPromptRecord(role, content, promptId);
+      });
       
-      // save first for 
-      if (tempHist.length > 0 ) { 
-        respId = await this.upsertPromptRecord(tempHist[0]?.role, tempHist[0]?.content)
-      }
-
-      await Promise.allSettled([, ...tempHist].map(async (hist) =>{
-        const { role, content } = hist;
-        return await this.upsertPromptRecord(role, content, respId);
-      }));
-
-      tempHist.push({role,content});
-
-      if (!respId) {
-        respId = await this.upsertPromptRecord(role, content, id);
-      } else {
-        await this.upsertPromptRecord(role, content, respId)
-      }
-
       const resp = await Ollama.chat({
         model: model || "llama3.1",
         messages: [ 
-          ...(history || tempHist),
+          ...Object.keys(history).map(x=>history[x]),
+          ...prePrompts,
           { role, content },
         ], 
         tools: this.toolService.getTools(toolCalls)
       });
 
       const { role: respRole, content: respContent} = resp?.message;
-      await this.upsertPromptRecord(respRole, respContent, id || respId);
+      await this.upsertPromptRecord(respRole, respContent, promptId);
       
       const { tool_calls } = resp?.message;
 
@@ -81,12 +73,11 @@ export class PromptService {
       if (tool_calls) {
         toolCallsResp = await Promise.allSettled(tool_calls.map(call=> {
           const { name, arguments: args } = call?.function;
-          // await tool call
-          return this.callTool(name, args, id);
+          return this.callTool(name, args, promptId);
         }));
       }
 
-      return Object.assign({}, toolCallsResp || resp, { promptId: id || respId });
+      return Object.assign({}, toolCallsResp || resp, { promptId });
 
     } catch (e) {
       throw `error calling model ${e}`;
