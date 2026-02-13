@@ -35,7 +35,7 @@ export class GenerateService {
       })
 
       // TODO fix return to be added to chat log
-      return _id;
+      return { _id, filePath };
     } catch(e) {
       console.log(e); // TODO centralized logging
     }
